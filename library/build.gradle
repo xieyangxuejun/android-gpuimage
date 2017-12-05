@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION as int
@@ -14,12 +14,18 @@ android {
 
         consumerProguardFiles 'proguard-rules.txt'
 
-        ndk {
-            moduleName "gpuimage-library"
-            stl "gnustl_shared"
-            abiFilters "all"
-            ldLibs "log"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11 -frtti -fexceptions"
+            }
         }
+
+//        ndk {
+//            moduleName "gpuimage-library"
+//            stl "gnustl_shared"
+//            abiFilters "armeabi-v7a"
+//            ldLibs "log"
+//        }
     }
 
     sourceSets {
@@ -35,6 +41,12 @@ android {
         }
 
         instrumentTest.setRoot('tests')
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
     }
 
     lintOptions {
@@ -62,11 +74,11 @@ artifacts {
     archives androidJavadocsJar
 }
 
-publish {
-    userOrg = POM_DEVELOPER_ID
-    groupId = GROUP
-    artifactId = ARTIFACT_ID
-    publishVersion = VERSION_NAME
-    desc = POM_DESCRIPTION
-    website = POM_URL
-}
+//publish {
+//    userOrg = POM_DEVELOPER_ID
+//    groupId = GROUP
+//    artifactId = ARTIFACT_ID
+//    publishVersion = VERSION_NAME
+//    desc = POM_DESCRIPTION
+//    website = POM_URL
+//}
